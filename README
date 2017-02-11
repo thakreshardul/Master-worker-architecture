@@ -1,0 +1,22 @@
+The submitted code implements a master-worker mechanism wherein, the master
+computes the summation of the the series e^x. Each term of the series is computed
+by a different worker which is spawned the master. The master then computes sum
+of all the values returned by each worker.
+
+There are four mechanisms implemented to read from the dedicated pipe assigned to 
+each worker:
+1. sequential
+2. select
+3. poll
+4. epoll
+
+Instruction to run:
+Run the make file by running make.
+
+Issues faced during implementation:
+1. Communication over pipes which have been duplicated on STDOUT_FILENO
+2. Worker provides different values on STDOUT depending on whehter it is
+   being called from master or run individually.
+3. To optimise select, I had to remove the pipe from fd_set after it was 
+   read, so that it won't be read again.
+4. Same for poll and epoll.
